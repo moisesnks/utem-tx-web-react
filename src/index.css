@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+/* variables */
+:root {
+    --color-primary: #ffed4a;
+}
+
+
+:root {
+    font-family: Poppins, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+input[type="checkbox"]#terms {
+    display: none;
+}
+
+input[type="checkbox"]#terms+span {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    user-select: none;
+    /* Evita que el texto sea seleccionable */
+}
+
+input[type="checkbox"]#terms+span:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 25px;
+    height: 25px;
+    border: 2px solid #ccc;
+    background-color: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="checkbox"]#terms:checked+span:before {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+input[type="checkbox"]#terms:checked+span:after {
+    content: "✔";
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    color: black;
+    font-size: large;
+    font-weight: 600;
+
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
