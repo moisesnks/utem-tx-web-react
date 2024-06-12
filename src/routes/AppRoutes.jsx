@@ -14,7 +14,7 @@ import Privacy from '../components/Privacy.jsx';
 import Verify from '../components/Verify.jsx';
 import LoginPassword from '../components/LoginPassword.jsx';
 import MarketPage from '../components/MarketPage.jsx';
-import BuyPage from '../components/BuyPage.jsx';
+import BuyPage from '../components/buy/BuyPage.jsx';
 
 const router = createBrowserRouter([
     {
