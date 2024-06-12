@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Modal from './Modal.jsx';
+import Snackbar from './Snackbar.jsx';  // Suponiendo que tienes un componente Snackbar
 
 const Verify = () => {
     const navigate = useNavigate();
@@ -17,21 +18,30 @@ const Verify = () => {
     const uid = location.state?.uid || (isUidValid ? uidParam : null);
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [snackbar, setSnackbar] = useState({ isOpen: false, message: '', isError: false });
 
     const closeModal = () => {
         setModalIsOpen(false);
+    };
+
+    const closeSnackbar = () => {
+        setSnackbar({ isOpen: false, message: '', isError: false });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const verificationCode = e.target.verificationCode.value;
         console.log(verificationCode);
-        // Aquí iría la lógica para enviar el formulario
-        // Redirigir al usuario a la página de inicio
-        await verifyCode(verificationCode);
-
-
-    }
+        try {
+            const data = await verifyCode(verificationCode);
+            setSnackbar({ isOpen: true, message: data, isError: false });
+            setTimeout(() => {
+                navigate("/login", { state: { email } });
+            }, 3000);  // 3 segundos de delay antes de navegar
+        } catch (error) {
+            setSnackbar({ isOpen: true, message: error.message, isError: true });
+        }
+    };
 
     // función para hacer la solicitud al backend para que verifique el código de verificación
     const verifyCode = async (verificationCode) => {
@@ -45,19 +55,14 @@ const Verify = () => {
         });
 
         if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
+            const errorText = await response.text();
+            throw new Error(errorText || `Error: ${response.statusText}`);
         }
 
         // response es un texto simple Usuario verificado correctamente
         const data = await response.text();
-
         console.log("Verification successful", data);
-
-        // Si todo salió ok, navegaremos a la siguiente vista: :/login
-        // le pasamos en el state el email 
-        navigate("/login", { state: { email } });
-
-
+        return data;
     };
 
     return (
@@ -95,6 +100,7 @@ const Verify = () => {
                         <li>Configura una lista blanca de direcciones de correo electrónico. Cómo configurar listas blancas de correo electrónico.</li>
                     </ol>
                 </Modal>
+                <Snackbar isOpen={snackbar.isOpen} message={snackbar.message} isError={snackbar.isError} onClose={closeSnackbar} />
             </div>
         ) : (
             <div className="bg-secondary h-fit p-4 rounded-2xl shadow-xl mx-auto my-8 w-96">
