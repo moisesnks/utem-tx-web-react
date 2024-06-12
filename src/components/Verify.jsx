@@ -6,7 +6,7 @@ import Modal from './Modal.jsx';
 const Verify = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { email } = location.state;
+    const { email, password } = location.state;
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const closeModal = () => {
@@ -19,7 +19,7 @@ const Verify = () => {
         console.log(verificationCode);
         // Aquí iría la lógica para enviar el formulario
         // Redirigir al usuario a la página de inicio
-        navigate('/');
+       
 
     }
 

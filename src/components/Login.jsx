@@ -19,11 +19,13 @@ const Login = () => {
     document.title = 'Iniciar sesión | Utem Trades';
     const [form, setForm] = useState({
         email: '',
+        password: '', 
     });
 
     const [errors, setErrors] = useState({});
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [isSubmitted, setIsSubmitted] = useState(false);
+
 
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -39,7 +41,7 @@ const Login = () => {
         });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validar el formulario solo después del envío
@@ -53,12 +55,40 @@ const Login = () => {
         setIsSubmitted(true);
 
         // Aquí iría la lógica para enviar el formulario
-        console.log(form);
+        // console.log(form);
 
         // Redirigir al usuario a la página de verificación, con el email en el objeto de estado
-        navigate('step2', { state: { email: form.email } });
+        await loginOnBackend(form);
+        navigate('/', { state: { email: form.email } });
     }
 
+    const loginOnBackend = async (form) => {
+        console.log(form);
+        try {
+          const response = await fetch('https://backend-test-sepia.vercel.app/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form),
+          });
+      
+          if (response.status === 200) {
+            const data = await response.json();
+            const token = data.token;
+      
+            localStorage.setItem('token', token);
+            console.log(token);
+            return true;
+          } else {
+            return false;
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          return false;
+        }
+      };
+  
 
     const handleButtonClick = (e, provider) => {
         e.preventDefault();
@@ -75,6 +105,10 @@ const Login = () => {
                     Dirección de correo electrónico
                 </label>
                 <input autoComplete="off" type="email" name="email" id="email" className="p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600" onChange={handleChange} />
+                <label htmlFor="password" className="text-left font-bold text-sm">
+                    Contraseña
+                </label>
+                <input autoComplete="off" type="password" name="password" id="password" className="p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600" onChange={handleChange} />
                 {(isSubmitted && errors.email) && <span className="text-red-500 text-sm">{errors.email}</span>}
                 <button type="submit" className="bg-primary hover:opacity-75 text-black rounded-lg p-2 font-bold">Iniciar sesión</button>
                 <div className="flex items-center my-4">

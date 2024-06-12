@@ -54,7 +54,7 @@ const LoginPassword = () => {
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                 <img src="/logo192.svg" alt="Logo" className="mx-auto" />
                 <h1 className="text-3xl font-bold text-left pb-2"> Ingresa tu contraseña</h1>
-                <span className='text-primary'> {emailHidden} </span>
+                <span className='text-primary'> {email} </span>
                 <label htmlFor="password" className="text-left font-bold text-sm">
                     Contraseña
                 </label>
