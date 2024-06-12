@@ -14,7 +14,7 @@ import Privacy from '../components/Privacy.jsx';
 import Verify from '../components/Verify.jsx';
 import LoginPassword from '../components/LoginPassword.jsx';
 import MarketPage from '../components/MarketPage.jsx';
-import TradingView from '../components/TradingView.jsx';
+import BuyPage from '../components/BuyPage.jsx';
 
 const router = createBrowserRouter([
     {
@@ -65,6 +65,10 @@ const router = createBrowserRouter([
             {
                 path: '/market/:symbol',
                 element: <MarketPage />
+            },
+            {
+                path: '/buy',
+                element: <BuyPage />
             }
         ]
     }
