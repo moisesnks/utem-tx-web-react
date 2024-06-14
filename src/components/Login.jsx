@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
-const Button = ({ type, text, onClick, imgUrl }) => {
-    const classNames = type === 'primary'
-        ? 'bg-primary hover:opacity-75 text-black'
-        : 'bg-secondary hover:opacity-75 text-white';
-
-    return (
-        <button onClick={onClick} className={`relative rounded-xl px-3 py-2 pl-10 font-bold ${classNames} border border-gray-600 flex items-center justify-center`}>
-            {imgUrl && <img src={imgUrl} alt="Icon" className="absolute left-4 w-6 h-6" />}
-            <span>{text}</span>
-        </button>
-    );
-}
+import Button from './Button.jsx';
+import { useAuth } from '../context/AuthProvider.jsx';
+import Loading from './Loading.jsx';
+import Snackbar from './Snackbar.jsx';
 
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { login, loading, isAuthenticated } = useAuth(); // Obtiene la función login desde el contexto
+    const [snackbar, setSnackbar] = useState({ isOpen: false, message: '', isError: false });
+
+    useEffect(() => {
+        if (isAuthenticated()) {
+            navigate('/');
+        }
+    }, [isAuthenticated()]);
 
     document.title = 'Iniciar sesión | Utem Trades';
 
@@ -25,8 +24,16 @@ const Login = () => {
         password: '',
     });
 
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
+
+    const closeSnackbar = () => {
+        setSnackbar({ isOpen: false, message: '', isError: false });
+    };
+
+
     const [errors, setErrors] = useState({});
-    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     useEffect(() => {
@@ -70,7 +77,7 @@ const Login = () => {
         }
 
         // Aquí iría la lógica para enviar el formulario
-        const loginSuccessful = await loginOnBackend(form);
+        const loginSuccessful = await login(form);
         if (loginSuccessful) {
             navigate('/', { state: { email: form.email } });
         } else {
@@ -78,41 +85,22 @@ const Login = () => {
         }
     }
 
-    const loginOnBackend = async (form) => {
-        console.log(form);
-        try {
-            const response = await fetch('https://backend-test-sepia.vercel.app/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(form),
-            });
-
-            if (response.status === 200) {
-                const data = await response.json();
-                const token = data.token;
-
-                localStorage.setItem('token', token);
-                console.log(token);
-                return true;
-            } else {
-                return false;
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            return false;
-        }
-    };
-
     const handleButtonClick = (e, provider) => {
         e.preventDefault();
         e.stopPropagation();
         console.log(provider);
     }
 
+    if (loading) {
+        return (
+            <div className="bg-secondary p-4 rounded-2xl shadow-xl mx-auto my-8 w-96 h-[40rem] flex items-center justify-center">
+                <Loading text="Iniciando sesión" />
+            </div>
+        )
+    }
+
     return (
-        <div className="bg-secondary h-fit p-4 rounded-2xl shadow-xl mx-auto my-8 w-96">
+        <div className="bg-secondary p-4 rounded-2xl shadow-xl mx-auto my-8 w-96 h-[40rem]">
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                 <img src="/logo192.svg" alt="Logo" className="mx-auto" />
                 <h1 className="text-3xl font-bold text-left pb-2">Iniciar sesión</h1>
@@ -152,6 +140,7 @@ const Login = () => {
                 <Button type="secondary" text="Continuar con Github" imgUrl="/github.svg" onClick={(e) => handleButtonClick(e, 'Github')} />
             </form>
             <Link to="/register" className="text-primary hover:opacity-75 text-center block mt-4">¿No tienes una cuenta? Regístrate</Link>
+            <Snackbar isOpen={snackbar.isOpen} message={snackbar.message} isError={snackbar.isError} onClose={closeSnackbar} />
         </div >
     );
 }

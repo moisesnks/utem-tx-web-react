@@ -9,10 +9,17 @@ module.exports = {
         primary: {
           DEFAULT: '#ffed4a',
           hover: '#FCD535',
+          dark: '#F9C74F',
         },
         secondary: {
           DEFAULT: '#2B3139',
           hover: '#202226',
+          dark: '#1A1D21',
+        },
+        danger: {
+          DEFAULT: '#e3342f',
+          hover: '#CC312B',
+          dark: '#D64540',
         },
         disabled: '#BDBDBD',
 

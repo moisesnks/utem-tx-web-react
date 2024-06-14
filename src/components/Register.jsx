@@ -1,38 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-const Button = ({ type, text, onClick, imgUrl }) => {
-    const classNames =
-        type === "primary"
-            ? "bg-primary hover:opacity-75 text-black"
-            : "bg-secondary hover:opacity-75 text-white";
-
-    return (
-        <button
-            onClick={onClick}
-            className={`relative rounded-xl px-3 py-2 pl-10 font-bold ${classNames} border border-gray-600 flex items-center justify-center`}
-        >
-            {imgUrl && (
-                <img src={imgUrl} alt="Icon" className="absolute left-4 w-6 h-6" />
-            )}
-            <span>{text}</span>
-        </button>
-    );
-};
-
+import Button from "./Button"; // Asumiendo que tienes un componente Button ya definido
+import { useAuth } from "../context/AuthProvider";
+import Loading from "./Loading";
 const Register = () => {
     const navigate = useNavigate();
     document.title = "Crear una cuenta gratis | Utem Trades";
+
+    const { register, loading, isAuthenticated } = useAuth(); // Obtiene la función register desde el contexto
     const [form, setForm] = useState({
         email: "",
-        password: "", // Added password to the form state
+        password: "", // Añadido password al estado del formulario
     });
+
+    useEffect(() => {
+        if (isAuthenticated()) {
+            navigate('/');
+        }
+    }, [isAuthenticated()]);
 
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [errors, setErrors] = useState({});
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [shouldSubmit, setShouldSubmit] = useState(false); // New state to trigger useEffect
 
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,7 +38,18 @@ const Register = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    let goToVerify = false;
+
+    useEffect(() => {
+        if (goToVerify) {
+            // navegar a la página de verify con dos estados: email y uid
+            navigate("/verify", { state: { email: user.email, uid: user.uid } });
+        }
+    }, [goToVerify]);
+
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validar el formulario solo después del envío
@@ -61,41 +62,18 @@ const Register = () => {
         setErrors(newErrors);
         setIsSubmitted(true);
 
-        // Si hay errores, no enviar el formulario
+        // Si hay errores o no se aceptan los términos, no enviar el formulario
         if (Object.keys(newErrors).length > 0 || !termsAccepted) {
             return;
         }
 
-        // Llamar a RegisterOnBackend();
-        console.log(form);
-        RegisterOnBackend(form);
-
-    };
-
-    const RegisterOnBackend = async (form) => {
-        try {
-            const response = await fetch("https://backend-test-sepia.vercel.app/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(form),
-            });
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            console.log("Registration successful", data);
-
-            // Si todo salió ok, navegaremos a la siguiente vista: :/verify
-            navigate("/verify", { state: { email: data.email, uid: data.uid } });
-
-        } catch (error) {
-            console.error("Error registering:", error);
+        const registrationSuccessful = await register(form);
+        if (registrationSuccessful) {
+            console.log("Registro exitoso");
+            goToVerify = true;
         }
-    };
 
+    };
 
 
     const handleCheckboxChange = (e) => {
@@ -109,8 +87,18 @@ const Register = () => {
         console.log(provider);
     };
 
+    if (loading) {
+        return (
+            <div className="bg-secondary h-[45rem] p-4 rounded-2xl shadow-xl mx-auto my-8 w-96 flex items-center justify-center">
+                <Loading text="Registrando..." />
+            </div>
+        )
+    }
+
+
+
     return (
-        <div className="bg-secondary h-fit p-4 rounded-2xl shadow-xl mx-auto my-8 w-96">
+        <div className="bg-secondary h-[45rem] p-4 rounded-2xl shadow-xl mx-auto my-8 w-96">
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                 <img src="/logo192.svg" alt="Logo" className="mx-auto" />
                 <h1 className="text-3xl font-bold text-left pb-2">

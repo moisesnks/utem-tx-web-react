@@ -1,14 +1,16 @@
 // src/App.js
 import { useState } from 'react';
 import AppRoutes from './routes/AppRoutes.jsx';
+import { AuthProvider } from './context/AuthProvider.jsx';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 
   return (
     <div className="App">
-      <AppRoutes isAuthenticated={isAuthenticated} />
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </div>
   );
 }

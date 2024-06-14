@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useBinanceApi from '../hooks/useBinanceApi';
-import LineChart from './LineChart';
+import CandlestickChart from './CandlestickChart';
 
 const MarketPage = () => {
     const { symbol } = useParams();
@@ -29,7 +29,7 @@ const MarketPage = () => {
             {loading ? (
                 <div>Loading...</div>
             ) : (
-                <LineChart data={data} />
+                <CandlestickChart data={data} />
             )}
         </div>
     );

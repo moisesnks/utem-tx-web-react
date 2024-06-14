@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Loading from './Loading.jsx';
 
 const CryptoList = () => {
     const [cryptos, setCryptos] = useState({ popular: [], new: [] });
@@ -58,17 +59,26 @@ const CryptoList = () => {
     }, [retry]);
 
     if (loading) {
-        return <div className="w-80 mx-auto max-h-96 bg-gray-900 p-5 rounded-lg text-center text-white">Cargando información...</div>;
+        return <div className="w-96 max-h-96 bg-secondary m-8 p-5 rounded-3xl text-center text-yellow-500 font-bold flex flex-col items-center justify-center gap-8">
+            <Loading text="Conectando con el servidor" />
+        </div>;
+
     }
 
     if (error) {
-        return <div className="w-80 mx-auto max-h-96 bg-gray-900 p-5 rounded-lg text-center text-red-500">{error}</div>;
+        return <div className="w-96  max-h-96 bg-secondary m-8 p-5 rounded-3xl text-center text-red-400 font-bold flex flex-col items-center justify-center gap-8">
+            Ups! Algo salió mal.
+            Aparentemente no se ha podido conectar con el servidor.
+            <button
+                onClick={() => window.location.reload()}
+                className="text-yellow-500">Reintentar</button>
+        </div >;
     }
 
     const currentCryptos = activeTab === 'popular' ? cryptos.popular : cryptos.new;
 
     return (
-        <div className="max-w-fit max-h-96 mx-auto bg-gray-900 p-5 rounded-lg">
+        <div className="w-96 max-h-96  bg-secondary m-8 p-5 rounded-3xl">
             <div className="flex justify-between mb-5">
                 <span
                     className={`cursor-pointer p-2 ${activeTab === 'popular' ? 'text-yellow-500 border-b-2 border-yellow-500' : 'text-gray-400'}`}
