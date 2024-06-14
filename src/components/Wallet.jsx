@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Select from './Select';
 import AreaChart from './AreaChart.jsx';
+import { stringToPrice } from '../utils/helpers.js';
 
 const Wallet = ({ wallet }) => {
     const [selectedCurrency, setSelectedCurrency] = useState('BTC');
@@ -20,7 +21,7 @@ const Wallet = ({ wallet }) => {
     const staticOptions = ['BTC', 'ETH', 'USDT'];
 
     return (
-        <div className="flex flex-row justify-between gap-4 p-4 rounded-2xl shadow-lg bg-zinc-200 dark:bg-gray-800 dark:text-gray-200 drop-shadow-lg">
+        <div className="flex flex-row justify-between gap-4 p-4 rounded-2xl shadow-lg bg-zinc-200 dark:bg-gray-800 dark:text-gray-200 drop-shadow-lg relative z-10">
             <div className="flex flex-col">
                 <span className="text-lg font-semibold text-gray-500 dark:text-gray-200">
                     Balance Estimado{' '}
@@ -35,25 +36,26 @@ const Wallet = ({ wallet }) => {
                         )}
                     </button>
                 </span>
-                <div className="flex items-center mt-4 text-gray-700 dark:text-white">
-                    <div>
-                        {showBalance ? (
-                            `${wallet[selectedCurrency] || 0}`
-                        ) : (
-                            '*********'
-                        )}
+                <div className="flex mt-4 text-gray-700 dark:text-white items-center gap-4">
+                    <div className='w-48'>
+                        <span className='pl-2 flex flex-grow text-2xl font-semibold overflow-ellipsis overflow-hidden'>
+                            {showBalance ? (
+                                `${stringToPrice(wallet[selectedCurrency], false) || 0}`
+                            ) : (
+                                '*********'
+                            )}
+                        </span>
                     </div>
-                    <div className="ml-4">
+                    <div className="relative">
                         <Select
                             options={staticOptions}
                             selectedOption={selectedCurrency}
                             onSelect={handleCurrencyChange}
                             disabled={!showBalance}
+                            className="z-10" // Asegura que el select tenga un z-index alto
                         />
                     </div>
                 </div>
-
-
             </div>
             <div className="h-32 w-96 relative shadow rounded-2xl dark:bg-gray-700 bg-stone-200 flex flex-col">
                 <div className="mt-2 flex justify-between px-8 gap-2  text-gray-200 ">
@@ -66,12 +68,12 @@ const Wallet = ({ wallet }) => {
                     <a href="#" className="text-sm bg-orange-600 text-white font-semibold drop-md shadow-md p-1 rounded-md top-0 right-24 px-2 py-1 hover:bg-orange-700">
                         Ingresar
                     </a>
-                </div >
+                </div>
                 <div className="absolute h-1/2 w-full bottom-0 right-0 rounded-2xl  drop-shadow-lg">
                     <AreaChart data={wallet.history} />
                 </div>
-            </div >
-        </div >
+            </div>
+        </div>
     );
 };
 

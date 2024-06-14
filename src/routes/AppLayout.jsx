@@ -104,7 +104,7 @@ const AppLayout = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <div className='flex flex-grow p-4'>
+                <div className='flex flex-grow p-4 overflow-x-hidden'>
                     <Outlet />
                 </div>
             )}

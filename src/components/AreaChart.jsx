@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { stringToPrice } from '../utils/helpers';
 
 const AreaChart = ({ data }) => {
     const svgRef = useRef();
@@ -110,11 +111,11 @@ const AreaChart = ({ data }) => {
                     tooltip
                         .html(`
                             <div class="text-white p-2 rounded-lg shadow-lg">
-                                <div class="font-bold text-yellow-400">Fecha: ${new Date(d.date).toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })}</div>
-                                <div class="text-lg font-bold">Balance: ${d.balance}</div>
+                                <div class="font-bold text-yellow-400">${new Date(d.date).toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })}</div>
+                                <div class="text-lg font-bold">${stringToPrice(d.balance, true)}</div>
                             </div>
                         `)
-                        .style('width', '18rem')
+                        .style('width', '8rem')
                         .style('left', (event.clientX - container.left + 10) + 'px')
                         .style('top', (event.clientY - container.top - 20) + 'px');
                 });

@@ -18,7 +18,7 @@ const ProfileResume = ({ user }) => {
     const name = displayName || `Anonymus-User-${uid.slice(0, 6)}`;
 
     return (
-        <div className="flex flex-col md:flex-row md:items-center md:gap-4">
+        <div className="flex flex-rol gap-4 p-4 rounded-2xl shadow-lg bg-zinc-200 dark:bg-gray-800 dark:text-gray-200 drop-shadow-lg items-center">
             <Avatar photoURL={photoURL} />
             <div className="flex flex-col md:flex-row flex-wrap gap-10 mt-4 md:mt-0">
                 <Name name={name} verified={verified} />
