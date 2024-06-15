@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const DropdownSearch = ({ options, selectedOption, onSelect, disabled }) => {
+const DropdownSearch = ({ options, selectedOption, onSelect, disabled = false }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [filteredOptions, setFilteredOptions] = useState(options);
     const [inputValue, setInputValue] = useState('');
@@ -54,14 +54,15 @@ const DropdownSearch = ({ options, selectedOption, onSelect, disabled }) => {
     const selectedOptionData = options.find(option => option.symbol === selectedOption);
 
     return (
-        <div className="relative z-50">
+        <div className="relative z-1">
             <div className="relative">
                 <button
                     type="button"
                     onClick={toggleDropdown}
-                    className="flex items-center gap-2 cursor-pointer"
+                    className={`flex items-center gap-2 cursor-pointer ${disabled ? 'pointer-events-none opacity-50' : ''}`}
                     aria-haspopup="listbox"
                     aria-expanded={isOpen}
+                    disabled={disabled}
                 >
                     <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-600">
                         <img
@@ -76,13 +77,13 @@ const DropdownSearch = ({ options, selectedOption, onSelect, disabled }) => {
                             }
                         />
                     </div>
-                    <span className="text-gray-500">{selectedOption}</span>
+                    <span >{selectedOption}</span>
                 </button>
             </div>
-            {isOpen && (
+            {isOpen && !disabled && (
                 <div
                     ref={ref}
-                    className="absolute z-50 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-48 overflow-y-auto"
+                    className="absolute z-1 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-48 overflow-y-auto"
                     role="listbox"
                 >
                     <input

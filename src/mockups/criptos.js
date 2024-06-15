@@ -37,7 +37,7 @@ const criptosMockup = {
             symbol: 'CLP',
             name: 'Chilean Peso',
             photoURL: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Flag_of_Chile.svg',
-            exchangeRate: 0.0013 // Tasas de cambio en USD
+            exchangeRate: 0.0011 // Tasas de cambio en USD
         },
         {
             symbol: 'USD',

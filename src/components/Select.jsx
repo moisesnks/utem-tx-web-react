@@ -36,7 +36,7 @@ const Select = ({ options, selectedOption, onSelect, disabled }) => {
     };
 
     return (
-        <div className="relative z-50" ref={ref}>
+        <div className="relative z-40" ref={ref}>
             <div
                 className={`flex items-center justify-between w-32 border ${disabled ? 'border-gray-400 cursor-not-allowed' : 'border-gray-300 bg-gray-300 dark:border-gray-700'} p-2 dark:bg-gray-700 rounded-lg ${disabled ? 'opacity-50' : 'cursor-pointer'}`}
                 onClick={toggleDropdown}
@@ -47,7 +47,7 @@ const Select = ({ options, selectedOption, onSelect, disabled }) => {
             </div>
 
             {isOpen && (
-                <div className="absolute z-50 mt-1 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
+                <div className="absolute z-40 mt-1 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
                     {options.map((option) => (
                         <div
                             key={option}
