@@ -1,7 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Select = ({ options, selectedOption, onSelect, disabled }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const ref = useRef(null); // Referencia al elemento del dropdown
+
+    // Función para cerrar el dropdown cuando se hace clic fuera de él
+    const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+            setIsOpen(false);
+        }
+    };
+
+    // Agregar listener de eventos al documento cuando el dropdown está abierto
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen]);
 
     const toggleDropdown = () => {
         if (!disabled) {
@@ -15,7 +36,7 @@ const Select = ({ options, selectedOption, onSelect, disabled }) => {
     };
 
     return (
-        <div className="relative z-50">
+        <div className="relative z-50" ref={ref}>
             <div
                 className={`flex items-center justify-between w-32 border ${disabled ? 'border-gray-400 cursor-not-allowed' : 'border-gray-300 bg-gray-300 dark:border-gray-700'} p-2 dark:bg-gray-700 rounded-lg ${disabled ? 'opacity-50' : 'cursor-pointer'}`}
                 onClick={toggleDropdown}

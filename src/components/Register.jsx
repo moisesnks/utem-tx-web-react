@@ -7,7 +7,7 @@ const Register = () => {
     const navigate = useNavigate();
     document.title = "Crear una cuenta gratis | Utem Trades";
 
-    const { register, loading, isAuthenticated } = useAuth(); // Obtiene la función register desde el contexto
+    const { register, loading, isAuthenticated, error } = useAuth(); // Obtiene la función register desde el contexto
     const [form, setForm] = useState({
         email: "",
         password: "", // Añadido password al estado del formulario
@@ -38,15 +38,6 @@ const Register = () => {
         });
     };
 
-    let goToVerify = false;
-
-    useEffect(() => {
-        if (goToVerify) {
-            // navegar a la página de verify con dos estados: email y uid
-            navigate("/verify", { state: { email: user.email, uid: user.uid } });
-        }
-    }, [goToVerify]);
-
 
 
     const handleSubmit = async (e) => {
@@ -68,11 +59,11 @@ const Register = () => {
         }
 
         const registrationSuccessful = await register(form);
-        if (registrationSuccessful) {
-            console.log("Registro exitoso");
-            goToVerify = true;
+        if (registrationSuccessful.user !== null) {
+            console.log("Registro exitoso: ", registrationSuccessful);
+            const { user } = registrationSuccessful;
+            navigate("/verify", { state: { email: user.email, uid: user.uid } });
         }
-
     };
 
 
@@ -95,6 +86,15 @@ const Register = () => {
         )
     }
 
+    if (error) {
+        return (
+            <div className="bg-secondary h-[45rem] p-4 rounded-2xl shadow-xl mx-auto my-8 w-96 flex items-center flex-col justify-center">
+                <p className="text-red-500 text-center">{error}</p>
+                <button onClick={() => window.location.reload()} className="bg-primary hover:opacity-75 text-black rounded-lg p-2 font-bold mt-4">Volver a intentar</button>
+            </div>
+        )
+    }
+
 
 
     return (
@@ -113,7 +113,7 @@ const Register = () => {
                     type="email"
                     name="email"
                     id="email"
-                    className="p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600"
+                    className="p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600 "
                     onChange={handleChange}
                 />
 

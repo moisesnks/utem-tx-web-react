@@ -52,7 +52,6 @@ const Wallet = ({ wallet }) => {
                             selectedOption={selectedCurrency}
                             onSelect={handleCurrencyChange}
                             disabled={!showBalance}
-                            className="z-10" // Asegura que el select tenga un z-index alto
                         />
                     </div>
                 </div>

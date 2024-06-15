@@ -38,7 +38,7 @@ const Profile = () => {
     };
 
     return (
-        <div className="flex flex-row h-100 w-full ">
+        <div className="flex flex-row h-full w-full ">
             <div className="border-r border-gray-200 dark:border-gray-700">
                 <ul className="flex flex-col text-sm font-medium text-left text-gray-500 dark:text-gray-400">
                     <li className="mb-2">

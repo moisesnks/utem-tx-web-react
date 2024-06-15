@@ -49,7 +49,8 @@ input[type="checkbox"]#terms:checked+span:after {
 
 }
 
-select {
+select,
+input {
     -webkit-appearance: none;
     /* Remueve el estilo por defecto en Safari */
     -moz-appearance: none;
@@ -70,6 +71,10 @@ select {
     /* Heredar el color */
 }
 
+input {
+    border: inherit;
+}
+
 /* Customizar el expandir del select */
 select::-ms-expand {
     display: none;
@@ -77,8 +82,22 @@ select::-ms-expand {
 }
 
 /* Eliminar el borde de los select al momento de hacer click */
-select:focus {
+select:focus,
+input:focus {
     outline: none;
+}
+
+/* Remove arrows/spinners in input[type=number] */
+input[type='number'] {
+    appearance: textfield;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Estilos para scrollbar normal */

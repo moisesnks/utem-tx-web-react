@@ -37,6 +37,8 @@ export const AuthProvider = ({ children }) => {
                 .catch(error => {
                     console.error('Error:', error);
                     setUser(null);
+                    setToken(null);
+                    localStorage.removeItem('token');
                 });
         } else {
             setUser(null);
@@ -91,11 +93,11 @@ export const AuthProvider = ({ children }) => {
                 throw new Error(data.message || `Error: ${response.statusText}`);
             }
 
-            const newToken = data.token;
-            setToken(newToken); // Almacenar el token en el estado
             setUser({ email: data.email, uid: data.uid });
             setLoading(false);
-            return true;
+            return {
+                user: { email: data.email, uid: data.uid },
+            }
         } catch (error) {
             setLoading(false);
             setError(error.message);

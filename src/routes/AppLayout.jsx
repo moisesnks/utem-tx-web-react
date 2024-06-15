@@ -31,7 +31,7 @@ const Button = ({ type, text, to }) => {
 const AppLayout = () => {
     const navigation = useNavigation();
     const isLoading = navigation.state === 'loading';
-    const { user, logout } = useAuth();
+    const { isAuthenticated, logout } = useAuth();
 
     // Estado para el tema
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -80,7 +80,7 @@ const AppLayout = () => {
                 </div>
                 {/* Botones de inicio de sesión y registro */}
                 <div className={`flex-col md:flex-row md:flex md:space-x-4 items-center w-full md:w-auto ${isMenuOpen ? 'flex' : 'hidden'} md:flex`}>
-                    {!user ? (
+                    {!isAuthenticated() ? (
                         <>
                             <Button type="secondary" text="Iniciar sesión" to="/login" />
                             <Button type="primary" text="Registrarse" to="/register" />

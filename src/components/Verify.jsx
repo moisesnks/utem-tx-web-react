@@ -91,7 +91,7 @@ const Verify = () => {
                                 autoComplete="off"
                                 type="text"
                                 id="verificationCode"
-                                className="relative p-2 pr-2 active:outline-none focus:outline-none bg-transparent"
+                                className="relative p-2 pr-2 active:outline-none focus:outline-none bg-transparent border-none"
                                 maxLength={6}
                             />
                             <span className="absolute inset-y-0 right-0 flex items-center pr-2 text-sm text-right text-primary cursor-pointer hover:opacity-75">

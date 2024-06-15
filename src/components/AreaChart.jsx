@@ -8,7 +8,7 @@ const AreaChart = ({ data }) => {
     const tooltipRef = useRef();
 
     useEffect(() => {
-
+        if (!svgRef.current) return; // Verificar si svgRef.current es null
 
         const gradientColors = [
             { offset: '0%', color: 'rgba(255, 165, 0, 0)' },
@@ -16,13 +16,11 @@ const AreaChart = ({ data }) => {
             { offset: '100%', color: 'rgba(255, 165, 0, 0.8)' }
         ];
 
-
-        // Función para manejar el redibujado del gráfico
         const drawChart = () => {
-            // Eliminar gráfico anterior al recargar los datos
+            // Limpiar el gráfico anterior antes de redibujar
             d3.select(svgRef.current).selectAll('*').remove();
 
-            if (!data) return;
+            if (!data || data.length === 0) return;
 
             const parentWidth = svgRef.current.parentElement.clientWidth;
             const parentHeight = svgRef.current.parentElement.clientHeight;
@@ -34,7 +32,6 @@ const AreaChart = ({ data }) => {
                 .attr('height', parentHeight)
                 .append('g');
 
-            // Escaladores para x e y
             const x = d3.scaleTime()
                 .domain(d3.extent(data, d => new Date(d.date)))
                 .range([0, width]);
@@ -44,20 +41,17 @@ const AreaChart = ({ data }) => {
                 .nice()
                 .range([height, 0]);
 
-            // Generador de línea para el borde
             const line = d3.line()
                 .x(d => x(new Date(d.date)))
                 .y(d => y(+d.balance))
                 .curve(d3.curveLinear);
 
-            // Área
             const area = d3.area()
                 .x(d => x(new Date(d.date)))
                 .y0(height)
                 .y1(d => y(+d.balance))
                 .curve(d3.curveLinear);
 
-            // Degradado para el área
             svg.append('linearGradient')
                 .attr('id', 'area-gradient')
                 .attr('gradientUnits', 'userSpaceOnUse')
@@ -69,13 +63,11 @@ const AreaChart = ({ data }) => {
                 .attr('offset', d => d.offset)
                 .attr('stop-color', d => d.color);
 
-            // Añadir el área al gráfico
             svg.append('path')
                 .datum(data)
                 .attr('fill', 'url(#area-gradient)')
                 .attr('d', area);
 
-            // Añadir línea naranja
             svg.append('path')
                 .datum(data)
                 .attr('fill', 'none')
@@ -83,7 +75,6 @@ const AreaChart = ({ data }) => {
                 .attr('stroke-width', 2)
                 .attr('d', line);
 
-            // Tooltip
             const tooltip = d3.select(tooltipRef.current)
                 .style('display', 'none')
                 .style('position', 'absolute')
@@ -92,7 +83,6 @@ const AreaChart = ({ data }) => {
                 .style('padding', '0.5em')
                 .style('border-radius', '0.5em');
 
-            // Añadir overlay para mostrar tooltip
             svg.append('rect')
                 .attr('width', width)
                 .attr('height', height)
@@ -119,13 +109,10 @@ const AreaChart = ({ data }) => {
                         .style('left', (event.clientX - container.left + 10) + 'px')
                         .style('top', (event.clientY - container.top - 20) + 'px');
                 });
-
         };
 
-        // Dibujar el gráfico inicial
         drawChart();
 
-        // Manejar redibujado en cambio de tamaño
         const resizeObserver = new ResizeObserver(() => {
             drawChart();
         });
@@ -133,7 +120,6 @@ const AreaChart = ({ data }) => {
         resizeObserver.observe(svgRef.current.parentElement);
         resizeObserverRef.current = resizeObserver;
 
-        // Limpiar observador al desmontar el componente
         return () => {
             if (resizeObserverRef.current) {
                 resizeObserverRef.current.disconnect();
