@@ -100,14 +100,14 @@ const Login = () => {
     }
 
     return (
-        <div className="bg-secondary p-4 rounded-2xl shadow-xl mx-auto my-8 w-96 h-[40rem]">
+        <div className="bg-light dark:bg-secondary p-4 rounded-2xl shadow-xl mx-auto my-8 w-96 h-[40rem]">
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                 <img src="/logo192.svg" alt="Logo" className="mx-auto" />
                 <h1 className="text-3xl font-bold text-left pb-2">Iniciar sesión</h1>
                 <div className="relative flex flex-grow w-full">
                     <label
                         htmlFor="email"
-                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-zinc-200 dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
+                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-light dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
                     >
                         Correo electrónico
                     </label>
@@ -124,7 +124,7 @@ const Login = () => {
                 <div className="relative">
                     <label
                         htmlFor="password"
-                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-zinc-200 dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
+                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-light dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
                     >
                         Contraseña
                     </label>
@@ -139,7 +139,7 @@ const Login = () => {
                     />
                 </div>
                 {(isSubmitted && errors.email) && <span className="text-red-500 text-sm">{errors.email}</span>}
-                <button type="submit" className="bg-primary hover:opacity-75 text-black rounded-lg p-2 font-bold">Iniciar sesión</button>
+                <button type="submit" className="bg-orange-500 dark:bg-primary hover:opacity-75 text-black rounded-lg p-2 font-bold">Iniciar sesión</button>
                 <div className="flex items-center my-4">
                     <div className="flex-grow border-t border-gray-300"></div>
                     <span className="mx-4 text-gray-500">o</span>
@@ -149,7 +149,7 @@ const Login = () => {
                 <Button type="secondary" text="Continuar con Google" imgUrl="/google.svg" onClick={(e) => handleButtonClick(e, 'Google')} />
                 <Button type="secondary" text="Continuar con Github" imgUrl="/github.svg" onClick={(e) => handleButtonClick(e, 'Github')} />
             </form>
-            <Link to="/register" className="text-primary hover:opacity-75 text-center block mt-4">¿No tienes una cuenta? Regístrate</Link>
+            <Link to="/register" className="text-orange-500 font-bold dark:text-primary hover:opacity-75 text-center block mt-4">¿No tienes una cuenta? Regístrate</Link>
             <Snackbar isOpen={snackbar.isOpen} message={snackbar.message} isError={snackbar.isError} onClose={closeSnackbar} />
         </div >
     );

@@ -3,31 +3,6 @@ import { Link, Outlet, useNavigation } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import Loading from '../components/Loading';
 
-const Button = ({ type, text, to }) => {
-    // switch para definir las clases de los botones
-    let classNames = '';
-    switch (type) {
-        case 'primary':
-            classNames = 'bg-primary hover:bg-primary-dark dark:text-gray-900';
-            break;
-        case 'secondary':
-            classNames = 'bg-secondary hover:bg-secondary-dark dark:text-white';
-            break;
-        case 'danger':
-            classNames = 'bg-danger hover:bg-danger-dark dark:text-gray-900';
-            break;
-        default:
-            classNames = 'bg-primary hover:bg-primary-dark dark:text-gray-900 ';
-    }
-    return (
-        <Link to={to}>
-            <button className={`rounded px-2 py-1 font-bold ${classNames}`}>
-                {text}
-            </button>
-        </Link>
-    );
-}
-
 const AppLayout = () => {
     const navigation = useNavigation();
     const isLoading = navigation.state === 'loading';
@@ -55,8 +30,8 @@ const AppLayout = () => {
     let iconClass = theme === 'dark' ? 'fa-sun' : 'fa-moon';
 
     return (
-        <div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'bg-dark text-white' : 'bg-gray-200 text-black'}`}>
-            <nav className="bg-gray-800 p-4 flex flex-wrap  items-center justify-between">
+        <div className={`flex-grow min-h-screen flex flex-col ${theme === 'dark' ? 'bg-dark text-white' : 'bg-light-dark text-black'} `}>
+            <nav className="dark:bg-secondary bg-gray-300 p-4 flex flex-wrap  items-center justify-between">
                 {/* Wrapper del logo y los links  */}
                 <div className="flex gap-md">
                     {/* Logo de UtemTX */}
@@ -71,10 +46,10 @@ const AppLayout = () => {
                     {/* Links */}
                     <ul className={`flex-col md:mx-4 md:flex-row md:flex md:space-x-4 items-center w-full md:w-auto ${isMenuOpen ? 'flex' : 'hidden'} md:flex`}>
                         <li>
-                            <Link to="/buy" className="text-white hover:text-primary block md:inline-block">Comprar Cripto</Link>
+                            <Link to="/buy" className=" font-bold hover:text-primary-light dark:hover:text-primary block md:inline-block">Comprar Cripto</Link>
                         </li>
                         <li>
-                            <Link to="/market" className="text-white hover:text-primary block md:inline-block">Mercados</Link>
+                            <Link to="/market" className=" font-bold hover:text-primary-light dark:hover:text-primary block md:inline-block">Mercados</Link>
                         </li>
                     </ul>
                 </div>
@@ -82,20 +57,38 @@ const AppLayout = () => {
                 <div className={`flex-col md:flex-row md:flex md:space-x-4 items-center w-full md:w-auto ${isMenuOpen ? 'flex' : 'hidden'} md:flex`}>
                     {!isAuthenticated() ? (
                         <>
-                            <Button type="secondary" text="Iniciar sesión" to="/login" />
-                            <Button type="primary" text="Registrarse" to="/register" />
+                            <Link
+                                to="/login"
+                                className="rounded px-2 py-1 font-bold bg-primary-light hover:bg-primary-lighthover dark:hover:opacity-75 dark:bg-primary dark:bg-primary-lighthover dark:text-gray-900"
+                            >
+                                <i className="fas fa-sign-in-alt"></i> Iniciar sesión
+                            </Link>
+                            <Link
+                                to="/register"
+                                className="rounded px-2 py-1 font-bold bg-secondary-light hover:bg-secondary-lighthover dark:hover:opacity-75 dark:bg-secondary dark:bg-secondary-lighthover dark:text-gray-900"
+                            >
+                                <i className="fas fa-user-plus"></i> Registrarse
+                            </Link>
                         </>
                     ) : (
                         <>
-                            <Button type="primary" text="Perfil" to="/profile" />
-                            <button onClick={logout} className="rounded px-2 py-1 font-bold bg-danger hover:bg-danger-dark dark:text-gray-900">Cerrar sesión</button>
+                            <Link
+                                to="/profile"
+                                className="rounded px-2 py-1 font-bold bg-primary-light hover:bg-primary-lighthover dark:hover:opacity-75 dark:bg-primary dark:bg-primary-lighthover dark:text-gray-900">
+                                < i className="fas fa-user" > </i> Perfil
+                            </Link>
+                            <button
+                                onClick={logout}
+                                className="rounded px-2 py-1 font-bold bg-danger hover:bg-danger-dark dark:text-gray-900">
+                                <i className="fas fa-sign-out-alt"></i> Cerrar sesión
+                            </button>
                         </>
                     )
                     }
-                    <button onClick={handleClick} className="text-white">
+                    <button onClick={handleClick} className="dark:text-primary text-primary-light">
                         <i className={`fas ${iconClass} text-xl w-8`}></i>
                     </button>
-                    <button onClick={() => console.log('click')} className="text-white">
+                    <button onClick={() => console.log('click')} className="text-gray-500">
                         <i className="fas fa-file-arrow-down text-xl w-8"></i>
                     </button>
                 </div>
@@ -104,8 +97,13 @@ const AppLayout = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <div className='flex flex-grow p-4 overflow-x-hidden'>
-                    <Outlet />
+                <div className='min-h-screen flex flex-col flex-grow p-4 overflow-x-hidden relative'>
+                    <div className="mb-12">
+                        <Outlet />
+                    </div>
+                    <div className="absolute bottom-0 w-full footer flex flex-row justify-center items-center bg-gray-300 dark:bg-secondary  p-4 mx-[-1rem] gap-8" >
+                        <p>&copy; 2024 Utem TX. Todos los derechos reservados.</p>
+                    </div>
                 </div>
             )}
         </div>

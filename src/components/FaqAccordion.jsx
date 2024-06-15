@@ -44,7 +44,7 @@ const FaqAccordion = () => {
                         className="w-full flex justify-between items-center  p-4 rounded-lg focus:outline-none"
                         onClick={() => toggleAccordion(index)}
                     >
-                        <div className="flex flex-row flex-grow align-center text-lg hover:text-primary hover:bg-secondary p-4">
+                        <div className="flex flex-row flex-grow align-center text-lg dark:hover:text-primary dark:hover:bg-secondary p-4 hover:text-secondary hover:bg-primary-dark rounded-lg">
                             <span className='bg-gray-500 text-secondary h-8 w-8 rounded-lg flex items-center justify-center mr-4'>{index + 1}</span>
                             <span className="">{item.question}</span>
                         </div>

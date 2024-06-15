@@ -1,6 +1,6 @@
 // src/components/Home.js
 import React from 'react';
-import { useAuth } from '../context/AuthProvider.jsx';
+import { useAuth } from '../../context/AuthProvider.jsx';
 import GuestView from './HomeGuestView.jsx';
 
 const Home = () => {

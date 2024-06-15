@@ -1,7 +1,7 @@
 // src/routes/AppRoutes.js
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AppLayout from './AppLayout.jsx';
-import Home from '../components/Home.jsx';
+import Home from '../components/Home/Home.jsx';
 import About from '../components/About.jsx';
 import Contact from '../components/Contact.jsx';
 import NotFound from '../components/NotFound.jsx';
@@ -13,7 +13,7 @@ import Terms from '../components/Terms.jsx';
 import Privacy from '../components/Privacy.jsx';
 import Verify from '../components/Verify.jsx';
 import MarketPage from '../components/MarketPage.jsx';
-import BuyPage from '../components/buy/BuyPage.jsx';
+import BuyPage from '../components/Buy/BuyPage.jsx';
 import Profile from '../components/Profile.jsx';
 
 const router = createBrowserRouter([

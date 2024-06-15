@@ -5,7 +5,7 @@ const Terms = () => {
     const dateUpdate = new Date("2024-06-03 06:59");
     return (
         <div>
-            <h1 className="text-3xl font-bold text-left pb-2">Condiciones de Uso de <span className="text-primary">Utem Trades</span></h1>
+            <h1 className="text-3xl font-bold text-left pb-2">Condiciones de Uso de <span className="text-orange-500 dark:text-primary">Utem Trades</span></h1>
             <h2>Última actualización: {dateUpdate.toLocaleDateString(
                 'es-ES', {
                 year: 'numeric',

@@ -11,13 +11,18 @@ export function stringToPrice(priceString, includeCurrencySymbol) {
         return 'Precio no válido';
     }
 
-    const formattedPrice = number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 });
+    const formattedPrice = number.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 8 });
 
     if (includeCurrencySymbol) {
         return `$${formattedPrice}`;
     } else {
         return formattedPrice;
     }
+}
+
+export function PriceToString(price) {
+    // le quitará los puntos y comas
+    return price.replace(/[,]/g, '');
 }
 
 // Función para determinar la clase de color basada en el valor del porcentaje

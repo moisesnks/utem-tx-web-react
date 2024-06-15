@@ -31,7 +31,7 @@ const DeviceMockupSwitcher = () => {
                         <span
                             onClick={() => handleTabClick('desktop')}
                             className={`cursor-pointer inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'desktop'
-                                ? 'text-blue-600 border-blue-600'
+                                ? 'text-primary-light dark:text-primary border-primary-light dark:border-primary'
                                 : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
                                 }`}
                         >
@@ -42,7 +42,7 @@ const DeviceMockupSwitcher = () => {
                         <span
                             onClick={() => handleTabClick('mobile')}
                             className={`cursor-pointer inline-block p-4 border-b-2 rounded-t-lg ${activeTab === 'mobile'
-                                ? 'text-blue-600 border-blue-600'
+                                ? 'text-primary-light dark:text-primary border-primary-light dark:border-primary'
                                 : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
                                 }`}
                         >

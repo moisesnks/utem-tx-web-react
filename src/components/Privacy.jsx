@@ -7,7 +7,7 @@ const Privacy = () => {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold text-left pb-2">Aviso de privacidad de <span className="text-primary">Utem Trades</span></h1>
+            <h1 className="text-3xl font-bold text-left pb-2">Aviso de privacidad de <span className="text-orange-500 dark:text-primary">Utem Trades</span></h1>
             <h2>Última actualización: {dateUpdate.toLocaleDateString(
                 'es-ES', {
                 year: 'numeric',
@@ -22,7 +22,7 @@ const Privacy = () => {
                 y protege su información personal a través de los sitios webs
                 y aplicaciones móviles de Utem Trades. "Utem Trades" se refiere al
                 ecosistema compuesto por los sitios webs de Utem Trades
-                (cuyos dominios incluyen, entre otros, <a className="text-primary" href="https://utemtrades.com">utemtrades.com</a>),
+                (cuyos dominios incluyen, entre otros, <a className="text-orange-500 dark:text-primary" href="https://utemtrades.com">utemtrades.com</a>),
                 las aplicaciones móviles de Utem, clientes, applets, y otras aplicaciones
                 que se desarrollen para ofrecer los servicios de Utem Trades.
             </p>
@@ -38,8 +38,8 @@ const Privacy = () => {
                     <table className="w-full mt-4">
                         <thead>
                             <tr>
-                                <th className="px-2 py-4 bg-secondary border border-gray-600">¿Qué información personal recopila y procesa?</th>
-                                <th className="px-2 py-4 bg-secondary border border-gray-600">¿Por qué Utem Trades procesa esta información?</th>
+                                <th className="px-2 py-4 bg-light-dark dark:bg-dark border border-gray-600">¿Qué información personal recopila y procesa?</th>
+                                <th className="px-2 py-4 bg-light-dark dark:bg-secondary border border-gray-600">¿Por qué Utem Trades procesa esta información?</th>
                             </tr>
                         </thead>
                         <tbody>

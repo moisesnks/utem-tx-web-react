@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import CurrencyConverter from './CurrencyConverter';
+import CurrencyConverter from './CurrencyConverter.jsx';
+import { useAuth } from '../../context/AuthProvider';
 
 
 const ComprarVender = () => {
+    const { isAuthenticated } = useAuth();
+    const auntenticado = isAuthenticated();
     const [mode, setMode] = useState('buy');
 
     const handleModeChange = (mode) => {
@@ -37,7 +40,7 @@ const ComprarVender = () => {
                     Vender
                 </div>
             </div>
-            <CurrencyConverter mode={mode} />
+            <CurrencyConverter mode={mode} isLogged={auntenticado} />
         </div>
     );
 };

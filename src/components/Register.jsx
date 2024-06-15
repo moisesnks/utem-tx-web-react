@@ -98,19 +98,19 @@ const Register = () => {
 
 
     return (
-        <div className="bg-secondary h-[45rem] p-4 rounded-2xl shadow-xl mx-auto my-8 w-96">
+        <div className="bg-light dark:bg-secondary h-[45rem] p-4 rounded-2xl shadow-xl mx-auto my-8 w-96">
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                 <img src="/logo192.svg" alt="Logo" className="mx-auto" />
                 <h1 className="text-3xl font-bold text-left pb-2">
                     Te damos la bienvenida a{" "}
-                    <span className="text-primary"> Utem Trades </span>
+                    <span className=" text-orange-500 dark:text-primary"> Utem Trades </span>
                 </h1>
                 <div className="relative flex flex-grow w-full">
                     <label
                         htmlFor="email"
-                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-zinc-200 dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
+                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-light dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
                     >
-                        Ccorreo electrónico
+                        Correo electrónico
                     </label>
                     <input
                         autoComplete="off"
@@ -124,7 +124,7 @@ const Register = () => {
                 <div className="relative flex flex-grow w-full">
                     <label
                         htmlFor="password"
-                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-zinc-200 dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
+                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-light dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
                     >
                         Contraseña
                     </label>
