@@ -104,30 +104,40 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                 <img src="/logo192.svg" alt="Logo" className="mx-auto" />
                 <h1 className="text-3xl font-bold text-left pb-2">Iniciar sesión</h1>
-                <label htmlFor="email" className="text-left font-bold text-sm">
-                    Dirección de correo electrónico
-                </label>
-                <input
-                    autoComplete="off"
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600"
-                    value={form.email}
-                    onChange={handleChange}
-                />
-                <label htmlFor="password" className="text-left font-bold text-sm">
-                    Contraseña
-                </label>
-                <input
-                    autoComplete="off"
-                    type="password"
-                    name="password"
-                    id="password"
-                    className="p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600"
-                    value={form.password}
-                    onChange={handleChange}
-                />
+                <div className="relative flex flex-grow w-full">
+                    <label
+                        htmlFor="email"
+                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-zinc-200 dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
+                    >
+                        Correo electrónico
+                    </label>
+                    <input
+                        autoComplete="off"
+                        type="email"
+                        name="email"
+                        id="email"
+                        className="w-full p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600"
+                        value={form.email}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="relative">
+                    <label
+                        htmlFor="password"
+                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-zinc-200 dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
+                    >
+                        Contraseña
+                    </label>
+                    <input
+                        autoComplete="off"
+                        type="password"
+                        name="password"
+                        id="password"
+                        className="w-full p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600"
+                        value={form.password}
+                        onChange={handleChange}
+                    />
+                </div>
                 {(isSubmitted && errors.email) && <span className="text-red-500 text-sm">{errors.email}</span>}
                 <button type="submit" className="bg-primary hover:opacity-75 text-black rounded-lg p-2 font-bold">Iniciar sesión</button>
                 <div className="flex items-center my-4">
