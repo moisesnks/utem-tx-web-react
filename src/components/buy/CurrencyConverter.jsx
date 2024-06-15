@@ -20,7 +20,10 @@ const CurrencyConverter = ({ mode, isLogged = false }) => {
     const [neto, setNeto] = useState('');
     const [convertedAmount, setConvertedAmount] = useState('');
     const [inputFocused, setInputFocused] = useState(false);
-    const [comision, setComision] = useState('0');
+    const [comision, setComision] = useState({
+        origen: '0',
+        destino: '0'
+    });
 
     // Reiniciar monedas cuando cambia el modo
     useEffect(() => {
@@ -46,16 +49,19 @@ const CurrencyConverter = ({ mode, isLogged = false }) => {
         const result = (amount * fromRate) / toRate;
         // Tasa es el valor de 1 unidad de la moneda de origen en la moneda de destino
         setTasa((fromRate / toRate).toFixed(8).slice(0, 16));
-        setComision(comision_origen.toFixed(8).slice(0, 8));
+        setComision({
+            origen: comision_origen.toFixed(8).slice(0, 16),
+            destino: comision_destino.toFixed(8).slice(0, 16)
+        });
         const real = (result)
-        const convertedAmount = (real - comision_destino).toFixed(8).slice(0, 8);
+        const convertedAmount = (real - comision_destino).toFixed(16).slice(0, 16);
         setConvertedAmount(convertedAmount);
-        setNeto(real.toFixed(8).slice(0, 8));
+        setNeto(real.toFixed(16).slice(0, 16));
     };
 
     // Contenido dinámico para el tooltip
     const tooltipContent = () => {
-        if (convertedAmount === '' || amount === '' || tasa === '' || comision === '')
+        if (convertedAmount === '' || amount === '' || tasa === '' || comision.origen === '' || comision.destino === '')
             return;
 
         return (
@@ -70,7 +76,7 @@ const CurrencyConverter = ({ mode, isLogged = false }) => {
                 </div>
                 <div className="flex flex-grow justify-between gap-8">
                     <span className="font-bold">Comisión:</span>
-                    <span className="ml-2">{stringToPrice(comision, true)} {fromCurrency} ≈ {stringToPrice(comision, true)} {toCurrency}</span>
+                    <span className="ml-2">{stringToPrice(comision.origen, true)} {fromCurrency} ≈ {stringToPrice(comision.destino, true)} {toCurrency}</span>
                 </div>
                 <div className="flex flex-grow justify-between gap-8">
                     <span className="font-bold">Recibir:</span>
@@ -83,8 +89,8 @@ const CurrencyConverter = ({ mode, isLogged = false }) => {
     // Función para manejar el cambio en el input de monto
     const handleAmountChange = (e) => {
         const inputVal = e.target.value;
-        // Validar que solo contenga dígitos y un punto como separador decimal y hasta dos decimales
-        if (/^\d*\.?\d{0,2}$/.test(inputVal)) {
+        // Validar que solo contenga dígitos y un punto como separador decimal y hasta 8 decimales
+        if (/^\d*\.?\d{0,8}$/.test(inputVal)) {
             setAmount(inputVal);
         }
     };

@@ -1,11 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
-import 'tailwindcss/tailwind.css';
 
 const CandlestickChart = ({ data, interval }) => {
     const svgRef = useRef();
     const tooltipRef = useRef();
-    const initialCandleWidth = 1.618;
+    const initialCandleWidth = 0.5;
 
     useEffect(() => {
         const svg = d3.select(svgRef.current);
@@ -16,14 +15,18 @@ const CandlestickChart = ({ data, interval }) => {
         const innerHeight = height - margin.top - margin.bottom;
         let newXScale, newYScale;
 
-
         // Set up scales
         const xScale = d3.scaleTime()
             .domain(d3.extent(data, d => d.date))
             .range([0, innerWidth]);
 
+        // Calculate the domain for yScale with a small margin
+        const yMin = d3.min(data, d => d.low);
+        const yMax = d3.max(data, d => d.high);
+        const yMargin = (yMax - yMin) * 0.05; // 5% margin
+
         const yScale = d3.scaleLinear()
-            .domain([d3.min(data, d => d.low), d3.max(data, d => d.high)])
+            .domain([yMin - yMargin, yMax + yMargin])
             .range([innerHeight, 0]);
 
         // Create axes
@@ -122,7 +125,7 @@ const CandlestickChart = ({ data, interval }) => {
                 const newData = data.filter(d => d.date >= x0 && d.date <= x1);
                 const minY = d3.min(newData, d => d.low);
                 const maxY = d3.max(newData, d => d.high);
-                newYScale.domain([minY, maxY]);
+                newYScale.domain([minY - yMargin, maxY + yMargin]);
 
                 svg.select('.x-axis').call(xAxis.scale(newXScale));
                 svg.select('.y-axis').call(yAxis.scale(newYScale));
@@ -206,6 +209,7 @@ const CandlestickChart = ({ data, interval }) => {
             .on('mouseout', mouseout);
 
     }, [data, interval]);
+
 
     return (
         <>
