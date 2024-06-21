@@ -10,7 +10,7 @@ const Login = () => {
     const location = useLocation();
     const { login, loading, isAuthenticated } = useAuth(); // Obtiene la función login desde el contexto
     const [snackbar, setSnackbar] = useState({ isOpen: false, message: '', isError: false });
-
+    const [showPassword, setShowPassword] = useState(false);
     useEffect(() => {
         if (isAuthenticated()) {
             navigate('/');
@@ -116,7 +116,7 @@ const Login = () => {
                         type="email"
                         name="email"
                         id="email"
-                        className="w-full p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600"
+                        className=" w-full p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600"
                         value={form.email}
                         onChange={handleChange}
                     />
@@ -124,20 +124,24 @@ const Login = () => {
                 <div className="relative">
                     <label
                         htmlFor="password"
-                        className="w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-light dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
+                        className="z-20 w-fit text-left font-bold text-sm absolute top-0 left-0 -mt-2 ml-2 bg-light dark:bg-secondary px-2 text-xs text-gray-700 dark:text-gray-300"
                     >
                         Contraseña
                     </label>
                     <input
                         autoComplete="off"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         name="password"
                         id="password"
-                        className="w-full p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600"
+                        className="relative w-full p-2 active:outline-none focus:outline-none rounded-lg bg-transparent border border-gray-600"
                         value={form.password}
                         onChange={handleChange}
                     />
+                    <i className={`absolute top-1/2 transform -translate-y-1/2 right-0 mr-4 cursor-pointer fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
+                        onClick={() => setShowPassword(!showPassword)}
+                    ></i>
                 </div>
+
                 {(isSubmitted && errors.email) && <span className="text-red-500 text-sm">{errors.email}</span>}
                 <button type="submit" className="bg-orange-500 dark:bg-primary hover:opacity-75 text-black rounded-lg p-2 font-bold">Iniciar sesión</button>
                 <div className="flex items-center my-4">
