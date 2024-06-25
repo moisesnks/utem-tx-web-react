@@ -1,8 +1,8 @@
-import CryptoList from '../CryptoList.jsx';
-import Welcome from '../Welcome.jsx';
-import DeviceMockup from '../DeviceMockup.jsx';
-import TradingAppPromo from '../TradingAppPromo.jsx';
-import FaqAccordion from '../FaqAccordion.jsx';
+import CryptoList from './components/CryptoList.jsx';
+import Welcome from './components/Welcome.jsx';
+import DeviceMockup from './components/DeviceMockup.jsx';
+import TradingAppPromo from './components/TradingAppPromo.jsx';
+import FaqAccordion from './components/FaqAccordion.jsx';
 
 const Guest = () => {
     return (

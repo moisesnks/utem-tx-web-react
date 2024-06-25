@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import DropdownSearch from '../DropdownSearch';
-import criptosMockup from '../../mockups/criptos';
+import DropdownSearch from '../../../components/DropdownSearch';
+import criptosMockup from '../../../mockups/criptos';
 import { Tooltip } from 'react-tooltip';
-import { stringToPrice } from '../../utils/helpers';
+import { stringToPrice } from '../../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 
 const CurrencyConverter = ({ mode, isLogged = false }) => {

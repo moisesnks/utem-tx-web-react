@@ -97,14 +97,16 @@ const AppLayout = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <div className='min-h-screen flex flex-col flex-grow p-4 overflow-x-hidden relative'>
-                    <div className="mb-12">
+
+                <div className="flex flex-col gap-2">
+                    <div className='min-h-screen flex flex-col overflow-x-hidden relative'>
                         <Outlet />
                     </div>
-                    <div className="absolute bottom-0 w-full footer flex flex-row justify-center items-center bg-gray-300 dark:bg-secondary  p-4 mx-[-1rem] gap-8" >
+                    <footer className="w-full footer flex flex-row justify-center items-center bg-gray-300 dark:bg-secondary p-4 gap-8">
                         <p>&copy; 2024 Utem TX. Todos los derechos reservados.</p>
-                    </div>
+                    </footer>
                 </div>
+
             )}
         </div>
     );

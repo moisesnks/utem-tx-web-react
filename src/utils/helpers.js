@@ -11,7 +11,7 @@ export function stringToPrice(priceString, includeCurrencySymbol) {
         return 'Precio no válido';
     }
 
-    const formattedPrice = number.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+    const formattedPrice = number.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 16 });
 
     if (includeCurrencySymbol) {
         return `$${formattedPrice}`;

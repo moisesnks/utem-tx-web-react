@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { stringToPrice } from '../utils/helpers';
+import { stringToPrice } from '../../../utils/helpers';
 
 const AreaChart = ({ data }) => {
     const svgRef = useRef();

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import CriptosPopulares from './CriptosPopulares.jsx';
-import ComprarVender from './ComprarVender.jsx';
+import CriptosPopulares from './components/CriptosPopulares.jsx';
+import ComprarVender from './components/ComprarVender.jsx';
 
 import popularMockup from '../../mockups/popular.js';
 

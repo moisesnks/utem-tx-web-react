@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Select from './Select';
+import Select from '../../../components/Select.jsx';
 import AreaChart from './AreaChart.jsx';
-import { stringToPrice } from '../utils/helpers.js';
+import { stringToPrice } from '../../../utils/helpers.js';
 
 const Wallet = ({ wallet }) => {
     const [selectedCurrency, setSelectedCurrency] = useState('BTC');
@@ -37,13 +37,14 @@ const Wallet = ({ wallet }) => {
                     </button>
                 </span>
                 <div className="flex mt-4 text-gray-700 dark:text-white items-center gap-4">
-                    <div className='w-48'>
-                        <span className='pl-2 flex flex-grow text-2xl font-semibold overflow-ellipsis overflow-hidden'>
+                    <div className='w-56'>
+                        <span className='pl-2 flex flex-grow text-2xl font-semibold overflow-ellipsis overflow-hidden whitespace-nowrap'>
                             {showBalance ? (
-                                `${stringToPrice(wallet[selectedCurrency], false) || 0}`
+                                `${stringToPrice(wallet[selectedCurrency], true) || 0}`
                             ) : (
                                 '*********'
                             )}
+                            <span className='text-xs font-normal pl-1'>{selectedCurrency}</span>
                         </span>
                     </div>
                     <div className="relative">

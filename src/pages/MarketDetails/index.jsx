@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useBinanceApi from '../hooks/useBinanceApi';
-import CandlestickChart from './CandlestickChart';
+import useBinanceApi from './hooks/useBinanceApi';
+import CandlestickChart from './components/CandlestickChart';
 
 const MarketPage = () => {
     const { symbol } = useParams();

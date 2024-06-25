@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CurrencyConverter from './CurrencyConverter.jsx';
-import { useAuth } from '../../context/AuthProvider';
+import { useAuth } from '../../../context/AuthProvider.jsx';
 
 
 const ComprarVender = () => {
@@ -27,7 +27,7 @@ const ComprarVender = () => {
                 </div>
                 <div
                     onClick={() => handleModeChange('buy')}
-                    className={`flex items-center justify-center flex-grow h-14 hover:cursor-pointer rounded-l-2xl text-2xl ${mode === 'buy' ? 'dark:bg-gray-800 bg-orange-500' : ' dark:bg-gray-600'
+                    className={` flex items-center justify-center flex-grow h-14 hover:cursor-pointer rounded-l-2xl text-2xl ${mode === 'buy' ? 'dark:bg-gray-800 bg-orange-500' : ' dark:bg-gray-600'
                         }`}
                 >
                     Comprar
