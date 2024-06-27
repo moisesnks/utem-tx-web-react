@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Select from '../../../components/Select.jsx';
+import Select from '@components/Select.jsx';
 import AreaChart from './AreaChart.jsx';
-import { stringToPrice } from '../../../utils/helpers.js';
+import { stringToPrice } from '@utils/helpers.js';
 
 const Wallet = ({ wallet }) => {
     const [selectedCurrency, setSelectedCurrency] = useState('BTC');

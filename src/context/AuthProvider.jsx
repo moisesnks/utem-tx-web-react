@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         // Realizar la solicitud para validar el token
-        fetch('http://localhost:8081/validate-token', {
+        fetch('https://backend-autch.tssw.cl/validate-token', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${storedToken}`
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
         setError(null);
         setMessage(null); // Nuevo estado para el mensaje del servidor
         try {
-            const response = await fetch('http://localhost:8081/login', {
+            const response = await fetch('https://backend-autch.tssw.cl/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ export const AuthProvider = ({ children }) => {
         setError(null);
         setMessage(null); // Nuevo estado para el mensaje del servidor
         try {
-            const response = await fetch('http://localhost:8081/register', {
+            const response = await fetch('https://backend-autch.tssw.cl/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch('http://localhost:8081/verify-code', {
+            const response = await fetch('https://backend-autch.tssw.cl/verify-code', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

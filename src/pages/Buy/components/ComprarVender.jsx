@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CurrencyConverter from './CurrencyConverter.jsx';
-import { useAuth } from '../../../context/AuthProvider.jsx';
+import { useAuth } from '@context/AuthProvider.jsx';
 
 
 const ComprarVender = () => {

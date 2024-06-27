@@ -9,6 +9,7 @@ import About from '../pages/About';
 import Buy from '../pages/Buy';
 import Profile from '../pages/Profile';
 import Home from '../pages/Home';
+import Market from '../pages/Market';
 import MarketDetails from '../pages/MarketDetails';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
             { path: '/terms', element: <Terms /> },
             { path: '/privacy', element: <Privacy /> },
             { path: '*', element: <NotFound /> },
+            { path: '/market', element: <Market /> },
             { path: '/market/:symbol', element: <MarketDetails /> },
             { path: '/buy', element: <Buy /> },
             { path: '/profile', element: <Profile /> }

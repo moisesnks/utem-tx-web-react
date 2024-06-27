@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Loading from '../../../components/Loading.jsx';
+import Loading from '@components/Loading.jsx';
 
 const CryptoList = () => {
     const [cryptos, setCryptos] = useState({ popular: [], new: [] });

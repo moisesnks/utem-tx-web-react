@@ -1,5 +1,11 @@
 // utils/helpers.js
 
+// Función para obtener la clase de color basada en el cambio de precio
+export const getChangeColor = (change) => {
+    const changeValue = parseFloat(change.replace('+', '').replace('%', ''));
+    return changeValue >= 0 ? 'text-green-500' : 'text-red-500';
+};
+
 // Función para convertir un string de precio a un formato con comas y puntos
 export function stringToPrice(priceString, includeCurrencySymbol) {
     if (typeof priceString !== 'string' || priceString.trim() === '') {

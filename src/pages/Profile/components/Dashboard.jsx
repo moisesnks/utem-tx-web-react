@@ -6,9 +6,9 @@ import SocialConnect from "./SocialConnect.jsx";
 import ProfileResume from "./ProfileResume.jsx";
 import Noticias from "./Noticias.jsx";
 
-import mockupWallet from "../../../mockups/wallet.js";
-import mockupUsers from "../../../mockups/users.js";
-import mockupNoticias from "../../../mockups/noticias.js";
+import mockupWallet from "@mockups/wallet.js";
+import mockupUsers from "@mockups/users.js";
+import mockupNoticias from "@mockups/noticias.js";
 
 const Dashboard = ({ user }) => {
     return (

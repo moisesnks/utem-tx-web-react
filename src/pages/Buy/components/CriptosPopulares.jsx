@@ -1,6 +1,6 @@
 import React from 'react';
-import { stringToPrice } from '../../../utils/helpers';
-import PorcentajeSpan from '../../../components/PorcentajeSpan.jsx';
+import { stringToPrice } from '@utils/helpers';
+import PorcentajeSpan from '@components/PorcentajeSpan.jsx';
 import { Link } from 'react-router-dom';
 
 const CriptosPopulares = ({ criptos }) => {
