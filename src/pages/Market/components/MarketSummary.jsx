@@ -11,6 +11,19 @@ const MarketSummary = ({ cryptoData, handleListClick }) => {
     };
 
     const renderTable = (category, title) => {
+        if (!cryptoData[category] || cryptoData[category].length === 0) {
+            return (
+                <div className="bg-white dark:bg-gray-900 rounded-lg text-base flex flex-col gap-4 w-full px-4 py-2">
+                    <h2 className="text-xl font-bold">{title}</h2>
+                    <div className="flex items-center justify-center h-24">
+                        <p className="text-center text-red-500">
+                            No se ha podido comunicar con el servidor. Si crees que este es un problema, comunícate con el equipo de soporte.
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="bg-white dark:bg-gray-900 rounded-lg text-base flex flex-col gap-4 w-full px-4 py-2">
                 <h2 className="text-xl font-bold">{title}</h2>
