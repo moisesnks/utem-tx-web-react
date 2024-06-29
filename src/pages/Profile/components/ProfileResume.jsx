@@ -17,6 +17,8 @@ const ProfileResume = ({ user }) => {
     const following = user?.following ?? 0;
     const name = displayName || `Anonymus-User-${uid.slice(0, 6)}`;
 
+    console.log(user);
+
     return (
         <div className="flex flex-rol gap-4 p-4 rounded-2xl shadow-lg bg-zinc-200 dark:bg-gray-800 dark:text-gray-200 drop-shadow-lg items-center">
             <Avatar photoURL={photoURL} />

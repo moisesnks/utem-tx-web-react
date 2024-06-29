@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import Perfil from "./components/Perfil.jsx";
 import Dashboard from "./components/Dashboard.jsx";
-import Configuracion from "./components/Configuracion.jsx";
+import Configuracion from "./components/Configuracion";
 import Contactos from "./components/Contactos.jsx";
 
 const Profile = () => {

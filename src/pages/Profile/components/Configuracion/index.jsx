@@ -1,8 +1,10 @@
 import React from "react";
 import { useAuth } from "@context/AuthProvider";
+import AvatarEditor from "./AvatarEditor.jsx";
+
 
 const Configuracion = () => {
-    const { user, updateUserProfile } = useAuth();
+    const { user, updateUserProfile, fetchUser } = useAuth();
     const displayName = user?.displayName ?? "";
     const uid = user?.uid ?? "default-uid";
     const verified = user?.verified ?? false;
@@ -18,29 +20,30 @@ const Configuracion = () => {
         updateUserProfile({ displayName: newDisplayName });
     };
 
-    const handleSubmitAvatar = (e) => {
-        e.preventDefault();
-        const file = e.target.elements.avatar.files[0];
-        const formData = new FormData();
-        formData.append('avatar', file);
+    // Función para convertir data URL a Blob
+    const dataURItoBlob = (dataURI) => {
+        const byteString = atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uintArray = new Uint8Array(arrayBuffer);
 
-        // Realiza la solicitud al backend para actualizar el avatar
-        fetch("/api/update-avatar", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${user.token}`,
-            },
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateUserProfile({ photoURL: data.photoURL });
-                } else {
-                    console.error(data.message);
-                }
-            })
-            .catch(error => console.error("Error updating avatar:", error));
+        for (let i = 0; i < byteString.length; i++) {
+            uintArray[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([arrayBuffer], { type: mimeString });
+    };
+
+    const handleSubmitAvatar = (dataURL) => {
+        if (dataURL) {
+            // Crear FormData y agregar la imagen convertida
+            const formData = new FormData();
+            const blob = dataURItoBlob(dataURL); // Función para convertir data URL a Blob
+            formData.append('file', blob, 'profile.jpg'); // 'profile.jpg' es el nombre del archivo opcional
+
+            // Llamar a updateUserProfile con el FormData que contiene la imagen
+            updateUserProfile({ photoURL: formData });
+        }
     };
 
     const handleSubmitPassword = (e) => {
@@ -101,7 +104,7 @@ const Configuracion = () => {
                         </button>
                     </form>
                 </div>
-                <div className="flex flex-col p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl shadow-lg bg-zinc-200 dark:bg-gray-800 dark:text-gray-200 drop-shadow-lg">
+                <div className="flex flex-col p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl shadow-lg bg-zinc-200 dark:bg-gray-800 dark:text-gray-200 drop-shadow-lg relative z-50 ">
                     <span className="text-xl sm:text-2xl font-bold text-left mb-2">
                         Avatar
                     </span>
@@ -115,29 +118,11 @@ const Configuracion = () => {
                                 e.target.src = "/avatar-svgrepo-com.svg";
                             }}
                         />
-                        <div className="flex flex-col">
-                            {/* Si no tiene avatar mostrar un mensaje */}
-                            <span className="text-gray-400 text-xs sm:text-sm mt-2 sm:mt-0">
-                                Sube una imagen para tu perfil. Las imágenes ofensivas serán eliminadas.
-                            </span>
-                            {/* Sección para cambiar el avatar */}
-                            <form className="w-full flex flex-col sm:flex-row gap-2 mt-4" onSubmit={handleSubmitAvatar}>
-                                <input
-                                    type="file"
-                                    name="avatar"
-                                    className="bg-gray-700 p-2 sm:p-3 md:p-4 rounded-lg w-full sm:w-auto"
-                                />
-                                <button
-                                    className="bg-blue-500 p-2 sm:p-3 md:p-4 rounded-lg w-full sm:w-auto"
-                                    type="submit"
-                                >
-                                    Cambiar
-                                </button>
-                            </form>
-                        </div>
+                        {/* <ProfilePhotoEditor onConfirm={handleSubmitAvatar} /> */}
+                        <AvatarEditor onConfirm={handleSubmitAvatar} />
                     </div>
                 </div>
-                <div className="flex flex-col p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl shadow-lg bg-zinc-200 dark:bg-gray-800 dark:text-gray-200 drop-shadow-lg">
+                <div className="flex flex-col p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl shadow-lg bg-zinc-200 dark:bg-gray-800 dark:text-gray-200 drop-shadow-lg ">
                     <span className="text-xl sm:text-2xl font-bold text-left mb-2">
                         Contraseña
                     </span>

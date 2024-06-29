@@ -10,7 +10,7 @@ const Guest = () => {
             <div className="flex-grow flex flex-col align-center justify-center align-center gap-8 p-8">
                 < div className="p-8 flex flex-row flex-wrap gap-8 flex-grow t-18 justify-around flex-wrap" >
                     <Welcome />
-                    <CryptoList />
+                    {/* <CryptoList /> */}
                 </div >
 
                 <div className="p-8 flex flex-row flex-wrap gap-8 flex-grow t-18 justify-around flex-wrap">

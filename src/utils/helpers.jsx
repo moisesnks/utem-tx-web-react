@@ -1,4 +1,21 @@
-// utils/helpers.js
+// utils/helpers
+import { useState, useEffect } from 'react';
+
+export function useMediaQuery(query) {
+    const [matches, setMatches] = useState(window.matchMedia(query).matches);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia(query);
+        const handler = (event) => setMatches(event.matches);
+
+        mediaQuery.addListener(handler);
+        setMatches(mediaQuery.matches);
+
+        return () => mediaQuery.removeListener(handler);
+    }, [query]);
+
+    return matches;
+}
 
 // Función para obtener la clase de color basada en el cambio de precio
 export const getChangeColor = (change) => {

@@ -14,8 +14,11 @@ const Noticias = ({ noticias }) => {
             <div className="overflow-y-auto flex flex-col gap-4 ">
                 {noticias.map((noticia, index) => (
                     <div className="dark:hover:bg-gray-900 hover:bg-neutral-300 hover:cursor-pointer flex flex-row items-center mx-auto pl-4" key={index}>
-                        <div className="border border-4 h-12 w-12 aspect-square rounded-full border-orange-500 dark:border-primary">
-                            <img src={noticia.autor.photoURL} alt={noticia.autor.nombre} className="rounded-full pointer-events-none h-full w-full object-cover"
+                        <div className="flex-shrink-0 h-14 aspect-square border-2 border-orange-500 dark:border-primary rounded-full shadow-lg drop-shadow-lg">
+                            <img
+                                className="h-full w-full object-cover rounded-full pointer-events-none"
+                                src={noticia.autor.photoURL}
+                                alt={noticia.autor.nombre}
                                 onError={
                                     (e) => {
                                         e.target.onerror = null;

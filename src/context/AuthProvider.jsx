@@ -13,12 +13,13 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const server = 'http://localhost:8081';
+
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         const storedUser = JSON.parse(localStorage.getItem('user'));
 
         if (storedToken && storedUser) {
-            // Si hay un token y usuario almacenados, establecer en el estado
             setToken(storedToken);
             setUser(storedUser);
         }
@@ -28,7 +29,6 @@ export const AuthProvider = ({ children }) => {
         const storedToken = localStorage.getItem('token');
 
         if (!storedToken || storedToken === 'undefined') {
-            // Si no hay token almacenado o es 'undefined', limpiar el estado y el almacenamiento local
             setUser(null);
             setToken(null);
             localStorage.removeItem('token');
@@ -36,8 +36,7 @@ export const AuthProvider = ({ children }) => {
             return;
         }
 
-        // Realizar la solicitud para validar el token
-        fetch('https://backend-autch.tssw.cl/validate-token', {
+        fetch(`${server}/validate-token`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${storedToken}`
@@ -51,8 +50,8 @@ export const AuthProvider = ({ children }) => {
                 }
             })
             .then(data => {
-                // Actualizar el estado del usuario con la información obtenida del token validado
                 const userFromToken = {
+                    displayName: data.data.displayName,
                     email: data.data.email,
                     uid: data.data.uid,
                     verified: data.data.emailVerified,
@@ -64,21 +63,63 @@ export const AuthProvider = ({ children }) => {
             })
             .catch(error => {
                 console.error('Error:', error);
-                // En caso de error al validar el token, limpiar el estado y el almacenamiento local
                 setUser(null);
                 setToken(null);
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
             });
-    }, [token]);
+    }, [token, server]);
+
+    const fetchUser = async () => {
+        setLoading(true);
+        setError(null);
+        setMessage(null);
+        try {
+            const storedToken = localStorage.getItem('token');
+            if (!storedToken) {
+                throw new Error('No token found');
+            }
+            const response = await fetch(`${server}/validate-token`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${storedToken}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Invalid token');
+            }
+
+            const data = await response.json();
+            const userFromToken = {
+                displayName: data.data.displayName,
+                email: data.data.email,
+                uid: data.data.uid,
+                verified: data.data.emailVerified,
+                role: data.data.role,
+                photoURL: data.data.photoURL
+            };
+            setUser(userFromToken);
+            localStorage.setItem('user', JSON.stringify(userFromToken));
+            console.log("Se ha actualizado el usuario", userFromToken);
+        } catch (error) {
+            console.error('Error:', error);
+            setUser(null);
+            setToken(null);
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
     const login = async (formData) => {
         setLoading(true);
         setError(null);
-        setMessage(null); // Nuevo estado para el mensaje del servidor
+        setMessage(null);
         try {
-            const response = await fetch('https://backend-autch.tssw.cl/login', {
+            const response = await fetch(`${server}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -95,10 +136,10 @@ export const AuthProvider = ({ children }) => {
             const newToken = responseData.data.token;
 
             localStorage.setItem('token', newToken);
-            setToken(newToken); // Almacenar el nuevo token en el estado
+            setToken(newToken);
 
-            // Obtener y almacenar el usuario desde la respuesta
             const userFromToken = {
+                displayName: responseData.data.displayName,
                 email: responseData.data.email,
                 uid: responseData.data.uid,
                 verified: responseData.data.emailVerified,
@@ -108,7 +149,6 @@ export const AuthProvider = ({ children }) => {
             setUser(userFromToken);
             localStorage.setItem('user', JSON.stringify(userFromToken));
 
-            // Setear el mensaje de éxito
             setMessage("Inicio de sesión exitoso");
 
             setLoading(false);
@@ -116,10 +156,7 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             setLoading(false);
             setError(error.message);
-
-            // Setear el mensaje de error desde el error capturado
             setMessage(error.message);
-
             console.error('Error:', error);
             return false;
         }
@@ -128,9 +165,9 @@ export const AuthProvider = ({ children }) => {
     const register = async (formData) => {
         setLoading(true);
         setError(null);
-        setMessage(null); // Nuevo estado para el mensaje del servidor
+        setMessage(null);
         try {
-            const response = await fetch('https://backend-autch.tssw.cl/register', {
+            const response = await fetch(`${server}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -145,7 +182,6 @@ export const AuthProvider = ({ children }) => {
                 throw new Error(data.message || `Error: ${response.statusText}`);
             }
 
-            // Obtener y almacenar el usuario desde la respuesta
             const userFromResponse = {
                 email: data.data.email,
                 uid: data.data.uid
@@ -153,22 +189,20 @@ export const AuthProvider = ({ children }) => {
             setUser(userFromResponse);
             localStorage.setItem('user', JSON.stringify(userFromResponse));
 
-            // Setear el mensaje del servidor en el estado
             setMessage(data.message);
 
             return {
                 user: userFromResponse,
-                message: data.message, // Incluir el mensaje del servidor en la respuesta
+                message: data.message,
             };
         } catch (error) {
             setLoading(false);
             setError(error.message);
-            setMessage(null); // Limpiar el mensaje en caso de error
+            setMessage(null);
             console.error('Error:', error);
             return false;
         }
     };
-
 
     const logout = () => {
         localStorage.removeItem('token');
@@ -181,7 +215,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://backend-autch.tssw.cl/verify-code', {
+            const response = await fetch(`${server}/verify-code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -205,13 +239,160 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateUserProfile = async (profileData) => {
+        setLoading(true);
+        setError(null);
+        try {
+            let endpoint = '';
+            let method = '';
+            let body;
+
+            if (profileData.displayName || profileData.rut || profileData.birthdate) {
+                endpoint = `${server}/update`;
+                method = 'PATCH';
+                body = JSON.stringify(profileData);
+            } else if (profileData.photoURL) {
+                endpoint = `${server}/upload-photo`;
+                method = 'POST';
+                body = profileData.photoURL;
+            } else {
+                throw new Error('No valid profile data provided');
+            }
+
+            const response = await fetch(endpoint, {
+                method: method,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    ...(method === 'PATCH' && { 'Content-Type': 'application/json' })
+                },
+                body: body,
+            });
+
+            if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message || `Error: ${response.statusText}`);
+            }
+
+            const responseData = await response.json();
+            setMessage(responseData.message);
+            await fetchUser();
+            return true;
+        } catch (error) {
+            setLoading(false);
+            setError(error.message);
+            console.error('Error:', error);
+            return false;
+        }
+    };
+
+
+    const changePassword = async (newPassword) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${server}/change-password`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ newPassword }),
+            });
+
+            const data = await response.json();
+            setLoading(false);
+
+            if (!response.ok) {
+                throw new Error(data.message || `Error: ${response.statusText}`);
+            }
+
+            return data.message;
+        } catch (error) {
+            setLoading(false);
+            setError(error.message);
+            console.error('Error:', error);
+            throw error;
+        }
+    };
+
+    const forgotPassword = async (email) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${server}/forgot-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await response.json();
+            setLoading(false);
+
+            if (!response.ok) {
+                throw new Error(data.message || `Error: ${response.statusText}`);
+            }
+
+            return data.message;
+        } catch (error) {
+            setLoading(false);
+            setError(error.message);
+            console.error('Error:', error);
+            throw error;
+        }
+    };
+
+    const resendCode = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${server}/resend-code`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+            setLoading(false);
+
+            if (!response.ok) {
+                throw new Error(data.message || `Error: ${response.statusText}`);
+            }
+
+            return data.message;
+        } catch (error) {
+            setLoading(false);
+            setError(error.message);
+            console.error('Error:', error);
+            throw error;
+        }
+    };
 
     const isAuthenticated = () => {
-        return user && token ? true : false; // Revisar tanto el usuario como el token
+        return user && token ? true : false;
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, verify, isAuthenticated, loading, error, message }}>
+        <AuthContext.Provider value={{
+            user,
+            token,
+            login,
+            register,
+            logout,
+            verify,
+            isAuthenticated,
+            updateUserProfile,
+            changePassword,
+            forgotPassword,
+            fetchUser,
+            resendCode,
+            loading,
+            error,
+            message
+        }}>
             {children}
         </AuthContext.Provider>
     );

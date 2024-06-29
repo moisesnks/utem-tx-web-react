@@ -35,7 +35,7 @@ const Market = () => {
         fetchData(currentCategory);
         const interval = setInterval(() => {
             fetchData(currentCategory);
-        }, 10000);
+        }, 2500);
 
         return () => clearInterval(interval);
     }, [currentCategory]);

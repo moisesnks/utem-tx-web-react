@@ -8,19 +8,17 @@ const AreaChart = ({ data }) => {
     const tooltipRef = useRef();
 
     useEffect(() => {
-        if (!svgRef.current) return; // Verificar si svgRef.current es null
-
-        const gradientColors = [
-            { offset: '0%', color: 'rgba(255, 165, 0, 0)' },
-            { offset: '50%', color: 'rgba(255, 165, 0, 0.3)' },
-            { offset: '100%', color: 'rgba(255, 165, 0, 0.8)' }
-        ];
-
         const drawChart = () => {
+            if (!svgRef.current || !svgRef.current.parentElement || !data || data.length === 0) return;
+
             // Limpiar el gráfico anterior antes de redibujar
             d3.select(svgRef.current).selectAll('*').remove();
 
-            if (!data || data.length === 0) return;
+            const gradientColors = [
+                { offset: '0%', color: 'rgba(255, 165, 0, 0)' },
+                { offset: '50%', color: 'rgba(255, 165, 0, 0.3)' },
+                { offset: '100%', color: 'rgba(255, 165, 0, 0.8)' }
+            ];
 
             const parentWidth = svgRef.current.parentElement.clientWidth;
             const parentHeight = svgRef.current.parentElement.clientHeight;
@@ -111,14 +109,16 @@ const AreaChart = ({ data }) => {
                 });
         };
 
-        drawChart();
-
-        const resizeObserver = new ResizeObserver(() => {
+        if (svgRef.current) {
             drawChart();
-        });
 
-        resizeObserver.observe(svgRef.current.parentElement);
-        resizeObserverRef.current = resizeObserver;
+            const resizeObserver = new ResizeObserver(() => {
+                drawChart();
+            });
+
+            resizeObserver.observe(svgRef.current.parentElement);
+            resizeObserverRef.current = resizeObserver;
+        }
 
         return () => {
             if (resizeObserverRef.current) {

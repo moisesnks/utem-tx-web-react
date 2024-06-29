@@ -1,6 +1,6 @@
 // Markets Component
 import React, { useState } from "react";
-import { stringToPrice } from "@utils/helpers.js";
+import { stringToPrice } from "@utils/helpers";
 import PorcentajeSpan from "@components/PorcentajeSpan.jsx";
 import marketMockup from "@mockups/markets.js";
 
