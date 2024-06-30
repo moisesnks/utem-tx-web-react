@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider';
 import Modal from '../../components/Modal';
-import Snackbar from '../../components/Snackbar';
 import Loading from '../../components/Loading';
 
 const Verify = () => {
@@ -25,17 +24,11 @@ const Verify = () => {
     const uid = location.state?.uid || (isUidValid ? uidParam : null);
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [snackbar, setSnackbar] = useState({ isOpen: false, message: '', isError: false });
-
     const [loadingVerify, setLoadingVerify] = useState(false);
     const [loadingRedirect, setLoadingRedirect] = useState(false);
 
     const closeModal = () => {
         setModalIsOpen(false);
-    };
-
-    const closeSnackbar = () => {
-        setSnackbar({ isOpen: false, message: '', isError: false });
     };
 
     const handleSubmit = async (e) => {
@@ -46,7 +39,7 @@ const Verify = () => {
 
         try {
             const data = await verify(uid, verificationCode);
-            setSnackbar({ isOpen: true, message: data, isError: false });
+            // Manejar la respuesta de verificación aquí si es necesario
 
             // Simulación del tiempo de espera antes de la redirección
             setLoadingRedirect(true);
@@ -55,7 +48,7 @@ const Verify = () => {
                 navigate("/login", { state: { email } });
             }, 3000);  // 3 segundos de delay antes de navegar
         } catch (error) {
-            setSnackbar({ isOpen: true, message: error.message, isError: true });
+            // Manejar el error aquí si es necesario
         } finally {
             setLoadingVerify(false);
         }
@@ -127,13 +120,9 @@ const Verify = () => {
     }
 
     return (
-        <>
-            <div className="border border-gray-300 dark:border-none dark:bg-secondary p-4 rounded-2xl shadow-xl mx-auto my-8 w-96">
-                {loadingVerify ? renderLoading() : loadingRedirect ? renderRedirect() : email && uid ? renderContent() : renderError()}
-            </div>
-            <Snackbar isOpen={snackbar.isOpen} onClose={closeSnackbar} isError={snackbar.isError} message={snackbar.message} />
-
-        </>
+        <div className="border border-gray-300 dark:border-none dark:bg-secondary p-4 rounded-2xl shadow-xl mx-auto my-8 w-96">
+            {loadingVerify ? renderLoading() : loadingRedirect ? renderRedirect() : email && uid ? renderContent() : renderError()}
+        </div>
     );
 }
 

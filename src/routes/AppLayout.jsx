@@ -4,10 +4,11 @@ import { useAuth } from '../context/AuthProvider';
 import Loading from '../components/Loading';
 import { useMediaQuery } from "@utils/helpers";
 
+
 const AppLayout = () => {
     const navigation = useNavigation();
     const isLoading = navigation.state === 'loading';
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, logout, message, error } = useAuth();
 
     // Estado para el tema
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -40,6 +41,10 @@ const AppLayout = () => {
     }
 
     let iconClass = theme === 'dark' ? 'fa-sun' : 'fa-moon';
+
+    console.log('Mensaje:', message);
+    console.log('Error:', error);
+
 
     return (
         <div className={`flex-grow min-h-screen flex flex-col ${theme === 'dark' ? 'bg-dark text-white' : 'bg-light-dark text-black'} `}>

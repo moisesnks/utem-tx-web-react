@@ -3,13 +3,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Button from '../../components/Button.jsx';
 import { useAuth } from '../../context/AuthProvider.jsx';
 import Loading from '../../components/Loading.jsx';
-import Snackbar from '../../components/Snackbar.jsx';
 
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { login, loading, isAuthenticated, error, message } = useAuth(); // Obtener error y message desde el contexto
+    const { login, loading, isAuthenticated } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
+
     useEffect(() => {
         if (isAuthenticated()) {
             navigate('/');
@@ -23,10 +23,6 @@ const Login = () => {
         password: '',
     });
 
-    const [snackbarOpen, setSnackbarOpen] = useState(false); // Estado para controlar la visibilidad del Snackbar
-    const [snackbarMessage, setSnackbarMessage] = useState(''); // Mensaje a mostrar en el Snackbar
-    const [snackbarError, setSnackbarError] = useState(false); // Para determinar si el Snackbar es de error
-
     useEffect(() => {
         if (location.state?.email) {
             setForm(prevForm => ({
@@ -35,23 +31,6 @@ const Login = () => {
             }));
         }
     }, [location.state?.email]);
-
-    useEffect(() => {
-        if (error) {
-            setSnackbarMessage(error);
-            setSnackbarError(true);
-            setSnackbarOpen(true);
-        } else if (message) {
-            setSnackbarMessage(message);
-            setSnackbarError(false);
-            setSnackbarOpen(true);
-        } else {
-            // reiniciar el estado del Snackbar
-            setSnackbarMessage('');
-            setSnackbarError(false);
-            setSnackbarOpen(false);
-        }
-    }, [error, message]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -68,6 +47,7 @@ const Login = () => {
         if (loginSuccessful) {
             navigate('/', { state: { email: form.email } });
         } else {
+            // Puedes manejar los errores aquí de otra manera
         }
     }
 
@@ -75,10 +55,6 @@ const Login = () => {
         e.preventDefault();
         e.stopPropagation();
         console.log(provider);
-    }
-
-    const handleCloseSnackbar = () => {
-        setSnackbarOpen(false);
     }
 
     const loadingContent = () => {
@@ -137,7 +113,6 @@ const Login = () => {
                         <span className="mx-4 text-gray-500">o</span>
                         <div className="flex-grow border-t border-gray-300"></div>
                     </div>
-                    {/* Botones para continuar con Google o Github */}
                     <Button type="secondary" text="Continuar con Google" imgUrl="/google.svg" onClick={(e) => handleButtonClick(e, 'Google')} />
                     <Button type="secondary" text="Continuar con Github" imgUrl="/github.svg" onClick={(e) => handleButtonClick(e, 'Github')} />
                 </form>
@@ -149,7 +124,6 @@ const Login = () => {
     return (
         <div className="bg-light dark:bg-secondary p-4 rounded-2xl shadow-xl mx-auto my-8 w-96 h-[40rem]">
             {loading ? loadingContent() : renderContent()}
-            <Snackbar isOpen={snackbarOpen} message={snackbarMessage} isError={snackbarError} onClose={handleCloseSnackbar} />
         </div >
     );
 }

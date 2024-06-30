@@ -173,6 +173,7 @@ const AvatarEditor = ({ onConfirm }) => {
                 ref={fileInputRef}
                 type="file"
                 onChange={handleImageChange}
+                accept="image/*"
                 className="flex flex-grow w-full dark:bg-gray-700 bg-zinc-400 p-2 rounded-lg"
             />
             <Modal isOpen={modalOpen} onClose={() => handleModalClose(false)} onConfirm={() => handleModalClose(true)}>
