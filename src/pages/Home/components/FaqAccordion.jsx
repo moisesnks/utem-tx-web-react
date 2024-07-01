@@ -45,7 +45,7 @@ const FaqAccordion = () => {
                         onClick={() => toggleAccordion(index)}
                     >
                         <div className="flex flex-row flex-grow align-center text-lg dark:hover:text-primary dark:hover:bg-secondary p-4 hover:text-secondary hover:bg-primary-dark rounded-lg">
-                            <span className='bg-gray-500 text-secondary h-8 w-8 rounded-lg flex items-center justify-center mr-4'>{index + 1}</span>
+                            <span className='bg-gray-500 text-secondary h-8 w-8 aspect-square rounded-lg flex items-center justify-center mr-4'>{index + 1}</span>
                             <span className="">{item.question}</span>
                         </div>
                         <svg

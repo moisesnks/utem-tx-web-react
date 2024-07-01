@@ -1,10 +1,12 @@
 import React from "react";
 import { useAuth } from "@context/AuthProvider";
 import AvatarEditor from "./AvatarEditor.jsx";
-
+import FormName from "./FormName.jsx";
+import FormPassword from "./FormPassword.jsx";
+import Loading from "@components/Loading";
 
 const Configuracion = () => {
-    const { user, updateUserProfile, fetchUser } = useAuth();
+    const { user, updateUserProfile, changePassword, loading } = useAuth();
     const displayName = user?.displayName ?? "";
     const uid = user?.uid ?? "default-uid";
     const verified = user?.verified ?? false;
@@ -49,26 +51,13 @@ const Configuracion = () => {
     const handleSubmitPassword = (e) => {
         e.preventDefault();
         const newPassword = e.target.elements.password.value;
-
-        // Realiza la solicitud al backend para actualizar la contraseña
-        fetch("/api/update-password", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${user.token}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ password: newPassword }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log("Password updated successfully");
-                } else {
-                    console.error(data.message);
-                }
-            })
-            .catch(error => console.error("Error updating password:", error));
+        // crear el objeto {password: newPassword}
+        changePassword({ password: newPassword });
     };
+
+    if (loading) {
+        return <Loading text="Cargando..." />;
+    }
 
     return (
         <div className="flex flex-col w-full h-screen pr-8">
@@ -89,20 +78,8 @@ const Configuracion = () => {
                         Escoge un nombre customizado como nombre de usuario para tu perfil. Nombres reales o nombres que puedan ser ofensivos serán eliminados.
                     </span>
                     {/* Sección para cambiar el nombre */}
-                    <form className="w-full flex flex-row flex-wrap gap-1 mt-2" onSubmit={handleSubmitDisplayName}>
-                        <input
-                            type="text"
-                            name="displayName"
-                            className="dark:border-none border border-gray-400 dark:bg-gray-700 w-full sm:w-2/3 md:w-1/2 p-2 sm:p-3 md:p-4 rounded-lg"
-                            placeholder="Escribe tu nuevo nombre de usuario"
-                        />
-                        <button
-                            className="bg-blue-500 p-2 sm:p-3 md:p-4 rounded-lg w-full sm:w-auto hover:opacity-75"
-                            type="submit"
-                        >
-                            Cambiar
-                        </button>
-                    </form>
+                    <FormName handleSubmitDisplayName={handleSubmitDisplayName} loading={loading} />
+
                 </div>
                 <div className="flex flex-col p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl shadow-lg bg-zinc-200 dark:bg-gray-800 dark:text-gray-200 drop-shadow-lg relative z-50 ">
                     <span className="text-xl sm:text-2xl font-bold text-left mb-2">
@@ -118,7 +95,6 @@ const Configuracion = () => {
                                 e.target.src = "/avatar-svgrepo-com.svg";
                             }}
                         />
-                        {/* <ProfilePhotoEditor onConfirm={handleSubmitAvatar} /> */}
                         <AvatarEditor onConfirm={handleSubmitAvatar} />
                     </div>
                 </div>
@@ -142,20 +118,7 @@ const Configuracion = () => {
                                 </ul>
                             </span>
                             {/* Sección para cambiar la contraseña */}
-                            <form className="w-full flex flex-col sm:flex-row gap-2 mt-4" onSubmit={handleSubmitPassword}>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    className="bg-gray-700 p-2 sm:p-3 md:p-4 rounded-lg w-full sm:w-auto"
-                                    placeholder="Escribe tu nueva contraseña"
-                                />
-                                <button
-                                    className="bg-blue-500 p-2 sm:p-3 md:p-4 rounded-lg w-full sm:w-auto"
-                                    type="submit"
-                                >
-                                    Cambiar
-                                </button>
-                            </form>
+                            <FormPassword handleSubmitPassword={handleSubmitPassword} loading={loading} />
                         </div>
                     </div>
                 </div>

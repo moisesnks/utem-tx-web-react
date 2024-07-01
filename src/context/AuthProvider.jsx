@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const server = 'http://localhost:8081';
+    const server = 'https://backend-auth.tssw.cl';
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -286,7 +286,7 @@ export const AuthProvider = ({ children }) => {
     };
 
 
-    const changePassword = async (newPassword) => {
+    const changePassword = async ({ password }) => {
         setLoading(true);
         setError(null);
         try {
@@ -296,7 +296,7 @@ export const AuthProvider = ({ children }) => {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ newPassword }),
+                body: JSON.stringify({ password }),
             });
 
             const data = await response.json();
